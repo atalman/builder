@@ -199,7 +199,7 @@ retry pip install https://github.com/matthew-brett/delocate/archive/master.zip
 echo "found the following wheels:"
 find $whl_tmp_dir -name "*.whl"
 echo "running delocate"
-find $whl_tmp_dir -name "*.whl" | xargs -I {} delocate-wheel -v {}
+find $whl_tmp_dir -name "*.whl" | xargs -I {} delocate-wheel -v --ignore-missing-dependencies {}
 find $whl_tmp_dir -name "*.whl"
 find $whl_tmp_dir -name "*.whl" | xargs -I {} delocate-listdeps {}
 echo "Finished delocating wheels at $(date)"
