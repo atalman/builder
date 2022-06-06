@@ -200,7 +200,7 @@ python setup.py bdist_wheel -d "$whl_tmp_dir"
 
 echo "Finished setup.py bdist_wheel at $(date)"
 
-if [[ $package_type != 'libtorch' ]]
+if [[ $package_type != 'libtorch' ]]; then
     echo "delocating wheel dependencies"
     retry pip install https://github.com/matthew-brett/delocate/archive/master.zip
     echo "found the following wheels:"
