@@ -202,7 +202,7 @@ echo "Finished setup.py bdist_wheel at $(date)"
 
 
 echo "delocating wheel dependencies"
-retry pip install delocate==0.10.2
+retry pip install delocate==0.10.0
 echo "found the following wheels:"
 find $whl_tmp_dir -name "*.whl"
 echo "running delocate"
