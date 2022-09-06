@@ -24,7 +24,37 @@ def smoke_test_cuda() -> None:
 def smoke_test_torchvision() -> None:
     import torchvision.datasets as dset
     import torchvision.transforms
+    from torchvision.io import read_file, decode_jpeg, decode_png
     print('Is torchvision useable?', all(x is not None for x in [torch.ops.image.decode_png, torch.ops.torchvision.roi_align]))
+    img_jpg = read_file('./assets/rgb_pytorch.jpg')
+    img_jpg_nv = decode_jpeg(img_jpg)
+    img_png = read_file('./assets/rgb_pytorch.png')
+    img__png_nv = decode_png(img_png)
+
+def smoke_test_vision_1() -> None:
+    from torchvision.io import read_image
+    from torchvision.models import resnet50, ResNet50_Weights
+
+    img = read_image("test/assets/encode_jpeg/grace_hopper_517x606.jpg")
+
+    # Step 1: Initialize model with the best available weights
+    weights = ResNet50_Weights.DEFAULT
+    model = resnet50(weights=weights)
+    model.eval()
+
+    # Step 2: Initialize the inference transforms
+    preprocess = weights.transforms()
+
+    # Step 3: Apply inference preprocessing transforms
+    batch = preprocess(img).unsqueeze(0)
+
+    # Step 4: Use the model and print the predicted category
+    prediction = model(batch).squeeze(0).softmax(0)
+    class_id = prediction.argmax().item()
+    score = prediction[class_id].item()
+    category_name = weights.meta["categories"][class_id]
+    print(f"{category_name}: {100 * score:.1f}%")
+
 
 def smoke_test_torchaudio() -> None:
     import torchaudio.compliance.kaldi  # noqa: F401
@@ -35,6 +65,7 @@ def smoke_test_torchaudio() -> None:
     import torchaudio.sox_effects  # noqa: F401
     import torchaudio.transforms  # noqa: F401
     import torchaudio.utils  # noqa: F401
+
 
 def main() -> None:
     #todo add torch, torchvision and torchaudio tests
