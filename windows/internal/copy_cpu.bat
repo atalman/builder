@@ -1,3 +1,5 @@
-copy "%CONDA_LIB_PATH%\libiomp*5md.dll" pytorch\torch\lib
+copy "%CONDA_LIB_PATH%\libiomp*5md.dll" %PYTORCH_ROOT%\torch\lib
 :: Should be set in build_pytorch.bat
-copy "%libuv_ROOT%\bin\uv.dll" pytorch\torch\lib
+echo "CURRENT DIRECTORY: "
+echo %cd%
+copy "%libuv_ROOT%\bin\uv.dll" %PYTORCH_ROOT%\torch\lib
