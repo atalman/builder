@@ -2,6 +2,7 @@ name: LLVM Build
 
 on:
   workflow_dispatch:
+  workflow_call:
   pull_request:
     paths:
       - llvm-build/*
@@ -25,7 +26,6 @@ jobs:
       matrix:
         config:
         - {runner: 'AlmaLinux 8', runs_on: 'linux.arm64.2xlarge', target-os: 'almalinux', arch: 'arm64'}
-
 
     steps:
 
@@ -55,13 +55,6 @@ jobs:
         repository: llvm/llvm-project
         path: llvm-project
         ref: ${{ env.llvm_commit_hash }}
-
-    - name: Install Prerequisites
-      shell: bash
-      run: |
-        python3 -m pip install cmake ninja sccache
-        mkdir -p ${{ env.SCCACHE_DIR }}
-        rm -rf ${{ env.SCCACHE_DIR }}/*
 
 
     - name: Configure, Build, Test, and Install LLVM (AlmaLinux)
